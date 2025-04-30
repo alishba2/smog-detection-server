@@ -32,11 +32,10 @@ app.use("/api/service", serviceRoutes);
 app.use('/api', sendForm);
 
 
-app.get('/', (res, req) => {
-  res.send(
-    "Smog Detection server link.........."
-  )
-})
+app.get('/testing', (req, res) => {
+  res.status(200).json({ message: 'Testing endpoint is working!' });
+});
+
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
