@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Technician = require('../models/Technician'); // Assuming you have this model
 const { createService } = require('./serviceController');
 
+
 async function submitCustomerForm(req, res) {
   const {
     name,
@@ -25,7 +26,7 @@ async function submitCustomerForm(req, res) {
     // Check if technician exists
     const technician = await Technician.findById(technicianObjectId);
     if (!technician) {
-      return res.status(400).json({ message: 'Technician not found' });
+      return res.status(400).json({ error: 'Incorrect technician ID.' });
     }
 
     const newCustomer = new Customer({
@@ -50,13 +51,26 @@ async function submitCustomerForm(req, res) {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error while submitting customer form' });
+
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ 
+        error: 'Validation error. Please check the submitted data.', 
+        details: error.errors 
+      });
+    }
+
+    if (error.name === 'CastError') {
+      return res.status(400).json({ 
+        error: 'Invalid ID format. Please provide a valid technician ID.', 
+        details: error.message 
+      });
+    }
+
+    res.status(500).json({ 
+      error: 'An unexpected error occurred while submitting the customer form. Please try again later.', 
+      details: error.message 
+    });
   }
 }
 
 module.exports = { submitCustomerForm };
-
-
-module.exports = {
-  submitCustomerForm
-};

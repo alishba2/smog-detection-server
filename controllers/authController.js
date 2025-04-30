@@ -34,6 +34,8 @@ exports.loginTechnician = async (req, res) => {
     const tech = await Technician.findOne({ email });
     if (!tech) return res.status(400).json({ msg: 'Invalid credentials' });
 
+    if (!tech.isVerified) return res.status(400).json({ msg: 'Email not verified' });
+
     const isMatch = await bcrypt.compare(password, tech.passwordHash);
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 

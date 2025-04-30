@@ -27,8 +27,10 @@ exports.createService = async (technicianId, customerId) => {
     }
 
     console.log("Created service successfully!");
+    return { message: "Service created successfully!", service: savedService };
   } catch (error) {
-    console.error('Error creating service:', error);
+    console.error('Error creating service:', error.message);
+    throw new Error(`Failed to create service: ${error.message}`);
   }
 };
 
