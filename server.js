@@ -9,6 +9,7 @@ const customerRoutes = require('./routes/customer');
 const smogTestRoutes = require('./routes/smogTest');
 const invoiceRoutes = require('./routes/invoice');
 const analyticsRoutes = require('./routes/analytics');
+const serviceRoutes = require('./routes/service');
 const sendForm = require('./routes/sendForm');
 const { swaggerUi, swaggerSpec } = require('./swagger');
 
@@ -27,10 +28,11 @@ app.use('/api/customer', customerRoutes);
 app.use('/api/smog-test', smogTestRoutes);
 app.use('/api/invoice', invoiceRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use("/api/service", serviceRoutes);
 app.use('/api', sendForm);
 
 
-app.get('/',(res,req)=>{
+app.get('/', (res, req) => {
   res.send(
     "Smog Detection server link.........."
   )

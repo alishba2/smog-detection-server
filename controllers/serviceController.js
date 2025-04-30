@@ -9,7 +9,7 @@ const defaultTests = [
 
 exports.createService = async (technicianId, customerId) => {
   try {
-    const testResults = [...defaultTests];  // Clone array safely
+    const testResults = [...defaultTests];
 
     const newService = new Service({
       technicianId,
@@ -32,24 +32,19 @@ exports.createService = async (technicianId, customerId) => {
   }
 };
 
-
 exports.updateTestResult = async (req, res) => {
   try {
     const { serviceId, testId, result, comments } = req.body;
 
     const service = await Service.findById(serviceId);
-    if (!service) {
-      return res.status(404).json({ message: 'Service not found.' });
-    }
+    if (!service) return res.status(404).json({ message: 'Service not found.' });
 
     const test = service.testResult.id(testId);
-    if (!test) {
-      return res.status(404).json({ message: 'Test not found.' });
-    }
+    if (!test) return res.status(404).json({ message: 'Test not found.' });
 
     test.result = result || test.result;
     test.comments = comments || test.comments;
-    test.testDate = new Date(); 
+    test.testDate = new Date();
 
     await service.save();
 
@@ -59,10 +54,7 @@ exports.updateTestResult = async (req, res) => {
       await service.save();
     }
 
-    res.status(200).json({
-      message: 'Test result updated successfully!',
-      service: service
-    });
+    res.status(200).json({ message: 'Test result updated successfully!', service });
   } catch (error) {
     console.error('Error updating test results:', error);
     res.status(500).json({ message: 'Error updating test results', error });

@@ -1,12 +1,16 @@
 const { sendFormLink } = require('../controllers/sendFormController'); // or separate controller if you prefer
 const express = require('express');
 const router = express.Router();
+const authGuard = require('../middlewares/authGuard'); // adjust path if needed
+
 /**
  * @swagger
  * /api/send-form-link:
  *   post:
  *     summary: Send form link to user via SMS
  *     tags: [Send Form To Customers]
+*     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -40,5 +44,5 @@ const router = express.Router();
  *         description: Server error or SMS sending failed
  */
 
-router.post('/send-form-link', sendFormLink);
+router.post('/send-form-link', authGuard,sendFormLink);
 module.exports =router;
