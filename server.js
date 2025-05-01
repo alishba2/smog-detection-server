@@ -15,8 +15,9 @@ const { swaggerUi, swaggerSpec } = require('./swagger');
 
 
 const app = express();
-
-app.use(cors());
+app.use(cors({
+  origin: 'https://smog-detection.vercel.app'
+}));
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI).then(() => console.log('MongoDB connected'))
