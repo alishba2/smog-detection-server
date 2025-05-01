@@ -36,7 +36,7 @@ app.get('/testing', (req, res) => {
   res.status(200).json({ message: 'Testing endpoint is working!' });
 });
 app.get('/testing2', (req, res) => {
-  res.status(200).json({ message: 'Testing endpoint is working2!' });
+  res.status(200).json({ message: 'Testing endpoint is working244!' });
 });
 
 const PORT = process.env.PORT || 8000;
