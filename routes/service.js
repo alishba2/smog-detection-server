@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { updateTestResult, getServicesByCustomer, getServicesByTechnician } = require('../controllers/serviceController');
+const { updateTestResult, getServicesByCustomer, getServicesByTechnician,getServiceById } = require('../controllers/serviceController');
 const authGuard = require('../middlewares/authGuard'); 
 
 /**
@@ -77,5 +77,26 @@ router.get('/get-service-by-tech/:techId', authGuard, getServicesByTechnician);
  *         description: Test result updated
  */
 router.put('/update-test-results', authGuard, updateTestResult);
+
+/**
+ * @swagger
+ * /api/service/getServiceById/{serviceId}:
+ *   get:
+ *     summary: Get service details by service ID
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - Service
+ *     parameters:
+ *       - in: path
+ *         name: serviceId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved service details
+ */
+router.get('/getServiceById/:serviceId', authGuard, getServiceById);
 
 module.exports = router;

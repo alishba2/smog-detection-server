@@ -80,3 +80,15 @@ exports.getServicesByCustomer = async (req, res) => {
     res.status(500).json({ msg: 'Error fetching services', error: err.message });
   }
 };
+
+exports.getServiceById = async (req, res) => {
+  try {
+    const service = await Service.findById(req.params.serviceId).populate('technicianId').populate('customerId');
+    if (!service) return res.status(404).json({ message: 'Service not found.' });
+
+    res.status(200).json(service);
+  } catch (error) {
+    console.error('Error fetching service by ID:', error.message);
+    res.status(500).json({ message: 'Error fetching service', error: error.message });
+  }
+};
