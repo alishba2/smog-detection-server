@@ -16,8 +16,12 @@ const { swaggerUi, swaggerSpec } = require('./swagger');
 
 const app = express();
 app.use(cors({
-  origin: '*'
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI).then(() => console.log('MongoDB connected'))
