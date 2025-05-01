@@ -16,7 +16,7 @@ const { swaggerUi, swaggerSpec } = require('./swagger');
 
 const app = express();
 app.use(cors({
-  origin: 'https://smog-detection.vercel.app'
+  origin: '*'
 }));
 app.use(express.json());
 
