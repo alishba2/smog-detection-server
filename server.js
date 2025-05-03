@@ -37,8 +37,8 @@ app.use("/api/service", serviceRoutes);
 app.use('/api', sendForm);
 
 
-app.get('/testing', (req, res) => {
-  res.status(200).json({ message: 'Testing endpoint is working!' });
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Welcome to smog pay server!' });
 });
 app.get('/testing2', (req, res) => {
   res.status(200).json({ message: 'Testing endpoint is working244!' });
