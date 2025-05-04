@@ -66,13 +66,14 @@ async function submitCustomerForm(req, res) {
       await customer.save();
     }
 
-    await createService(technicianId, customer._id);
+    let {service}= await createService(technicianId, customer._id);
 
     res.status(201).json({
       message: customer.customerType === 'New Customer'
         ? 'New customer created and service logged!'
         : 'Existing customer updated and service logged!',
-      customer
+      customer,
+      service
     });
 
   } catch (error) {
