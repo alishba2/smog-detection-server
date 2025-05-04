@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { registerTechnician, loginTechnician, googleAuth, verifyEmail, resetPassword, resetPasswordRequest } = require('../controllers/authController');
+const { registerTechnician, loginTechnician, googleAuth, verifyEmail, resetPassword, resetPasswordRequest, getCurrentTechnician } = require('../controllers/authController');
+const authGuard = require('../middlewares/authGuard');
 
 /**
  * @swagger
@@ -195,4 +196,42 @@ router.post('/reset-password-request', resetPasswordRequest);
  *       - Authentication
  */
 router.post('/reset-password', resetPassword);
+
+/**
+ * @swagger
+ * /api/auth/me:
+ *   get:
+ *     summary: Get current logged-in technician
+ *     description: Returns the details of the currently authenticated technician based on the provided token.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved technician data.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 technician:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       description: Technician ID.
+ *                     name:
+ *                       type: string
+ *                       description: Technician name.
+ *                     email:
+ *                       type: string
+ *                       description: Technician email.
+ *       401:
+ *         description: Unauthorized. Token missing or invalid.
+ *       404:
+ *         description: Technician not found.
+ *     tags:
+ *       - Authentication
+ */
+router.get('/me',authGuard, getCurrentTechnician);
+
 module.exports = router;

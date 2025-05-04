@@ -11,6 +11,7 @@ const invoiceRoutes = require('./routes/invoice');
 const analyticsRoutes = require('./routes/analytics');
 const serviceRoutes = require('./routes/service');
 const sendForm = require('./routes/sendForm');
+const reportRoutes = require('./routes/report');
 const { swaggerUi, swaggerSpec } = require('./swagger');
 
 
@@ -35,6 +36,7 @@ app.use('/api/invoice', invoiceRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use("/api/service", serviceRoutes);
 app.use('/api', sendForm);
+app.use('/api/report',reportRoutes);
 
 
 app.get('/', (req, res) => {

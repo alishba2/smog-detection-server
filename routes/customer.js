@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { submitCustomerForm } = require('../controllers/customerController');
+const { getCustomerHistory } = require('../controllers/customerController');
 
 /**
  * @swagger
@@ -39,9 +40,6 @@ const { submitCustomerForm } = require('../controllers/customerController');
  *               year:
  *                 type: string
  *                 description: The year of the vehicle.
- *               service:
- *                 type: string
- *                 description: The service requested (standard_smog_check, enhanced_smog_check, pre_registration_inspection).
  *               bill:
  *                 type: object
  *                 properties:
@@ -76,8 +74,67 @@ const { submitCustomerForm } = require('../controllers/customerController');
  *       500:
  *         description: Internal server error.
  */
+
+/**
+ * @swagger
+ * /api/customer/customer-history:
+ *   get:
+ *     summary: Get customer history
+ *     description: Get the history of services for a customer, filtered by closed status.
+ *     operationId: getCustomerHistory
+ *     tags:
+ *       - Customer
+ *     parameters:
+ *       - in: query
+ *         name: customerId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The unique identifier of the customer.
+ *       - in: query
+ *         name: technicianId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The unique identifier of the technician.
+ *     responses:
+ *       200:
+ *         description: Customer history retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   jobId:
+ *                     type: string
+ *                   technicianId:
+ *                     type: string
+ *                   customerId:
+ *                     type: string
+ *                   serviceDate:
+ *                     type: string
+ *                     format: date-time
+ *                   passed:
+ *                     type: boolean
+ *       400:
+ *         description: Invalid parameters provided.
+ *       500:
+ *         description: Internal server error.
+ */
+
 router.post('/submit-form', submitCustomerForm);
 
-
+// Example usage of the function in your route
+router.get('/customer-history', async (req, res) => {
+  const { customerId, technicianId } = req.query; 
+  try {
+    const history = await getCustomerHistory(customerId, technicianId);
+    res.status(200).json(history); 
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = router;

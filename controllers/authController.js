@@ -174,3 +174,40 @@ exports.resetPassword = async (req, res) => {
     res.status(400).json({ msg: 'Invalid or expired token' });
   }
 };
+
+
+
+const getUserFromToken = async (req) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new Error('No token provided');
+    }
+
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await Technician.findById(decoded.id);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return user;
+  } catch (err) {
+    throw new Error('Invalid or expired token');
+  }
+};
+
+exports.getCurrentTechnician = async (req, res) => {
+  try {
+    const tech = await getUserFromToken(req);
+    res.json({
+      id: tech._id,
+      name: tech.name,
+      email: tech.email,
+      isVerified: tech.isVerified,
+    });
+  } catch (err) {
+    res.status(401).json({ msg: err.message });
+  }
+};
