@@ -17,6 +17,7 @@ exports.registerTechnician = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
+    console.log('hje');
     const newTech = new Technician({ email, passwordHash });
     await newTech.save();
     const verificationToken = jwt.sign({ id: newTech._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
