@@ -7,7 +7,8 @@ const getReportByTechnician = async (req, res) => {
       const { technicianId } = req.params;  
   
       // Fetch the report for the technician
-      const report = await Report.findOne({ technicianId }).sort({ date: -1 }); 
+      const report = await Report.findOne({ technicianId }); 
+      console.log(report, "report here");
   
       if (!report) {
         return res.status(404).json({ message: 'Report not found for the specified technician.' });

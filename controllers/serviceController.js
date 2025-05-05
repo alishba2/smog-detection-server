@@ -102,12 +102,13 @@ exports.updateTestResult = async (req, res) => {
       }
     });
 
+    console.log(todayJobs,"today jobs");
     // Check if a report exists for today
     let report = await Report.findOne({
-      technicianId,
-      date: { $gte: today }
+      technicianId
     });
 
+    console.log(report, "report here");
     if (report) {
       // Update the existing report
       report.totalRevenue = totalRevenue;
