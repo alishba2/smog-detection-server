@@ -103,6 +103,25 @@ exports.getTech = async (req, res) => {
   }
 };
 
+
+exports.deleteTech = async (req, res) => {
+  const techId = req.params.id;
+
+  try {
+    // Delete technician
+    const deletedTech = await Technician.findOneAndDelete({ _id: techId, creatorId: req.user.id });
+    if (!deletedTech) {
+      return res.status(404).json({ msg: 'Technician not found or not authorized' });
+    }
+
+    // Optionally delete associated access setting
+    await AccessSetting.findOneAndDelete({ technicianId: techId });
+
+    res.status(200).json({ msg: 'Technician and associated settings deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
 exports.googleAuth = async (req, res) => {
   try {
     const { token } = req.body;

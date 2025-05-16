@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerTechnician, loginTechnician, googleAuth, verifyEmail, resetPassword, resetPasswordRequest, getCurrentTechnician,createTech,getTech } = require('../controllers/authController');
+const { registerTechnician, loginTechnician, googleAuth, verifyEmail, resetPassword, resetPasswordRequest, getCurrentTechnician,createTech,getTech,deleteTech } = require('../controllers/authController');
 const authGuard = require('../middlewares/authGuard');
 
 /**
@@ -180,6 +180,33 @@ router.post('/create-tech',authGuard, createTech);
 
 router.get('/get-techs-by-creator',authGuard, getTech);
 
+
+/**
+ * @swagger
+ * /api/auth/tech/{id}:
+ *   delete:
+ *     summary: Delete a technician by ID
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the technician to delete
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Technician deleted successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Technician not found
+ *       500:
+ *         description: Server error
+ */
+router.delete('/tech/:id', authGuard, deleteTech);
 
 /**
  * @swagger
