@@ -183,29 +183,19 @@ router.get('/get-techs-by-creator',authGuard, getTech);
 
 /**
  * @swagger
- * /api/auth/tech/{id}:
- *   delete:
- *     summary: Delete a technician by ID
+ * /api/auth/get-techs-by-creator:
+ *   get:
+ *     summary: Get all technicians created by logged-in user
  *     tags: [Authentication]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID of the technician to delete
- *         schema:
- *           type: string
  *     responses:
  *       200:
- *         description: Technician deleted successfully
+ *         description: List of technicians
  *       401:
  *         description: Unauthorized
- *       404:
- *         description: Technician not found
  *       500:
  *         description: Server error
  */
+
 router.delete('/tech/:id', authGuard, deleteTech);
 
 /**

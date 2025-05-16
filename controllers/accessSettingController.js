@@ -25,7 +25,7 @@ exports.setAccessSetting = async (req, res) => {
 // Get access setting by technician ID
 exports.getAccessSetting = async (req, res) => {
   try {
-    const { technicianId } = req.params;
+    const  technicianId  = req.user;
 
     const setting = await AccessSetting.findOne({ technicianId });
 
@@ -43,7 +43,7 @@ exports.getAccessSetting = async (req, res) => {
 // Delete access setting
 exports.deleteAccessSetting = async (req, res) => {
   try {
-    const { technicianId } = req.params;
+    const  technicianId  = req.user;
 
     const setting = await AccessSetting.findOneAndDelete({ technicianId });
 

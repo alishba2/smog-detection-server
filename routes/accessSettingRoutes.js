@@ -31,21 +31,14 @@ const authGuard = require('../middlewares/authGuard');
  *       500:
  *         description: Server error
  */
-router.post('/access-setting',authGuard, accessSettingController.setAccessSetting);
+router.post('/access-setting', authGuard, accessSettingController.setAccessSetting);
 
 /**
  * @swagger
- * /api/access-setting/{technicianId}:
+ * /api/access-setting:
  *   get:
  *     summary: Get access settings for a technician
  *     tags: [AccessSetting]
- *     parameters:
- *       - in: path
- *         name: technicianId
- *         required: true
- *         schema:
- *           type: string
- *         description: Technician ID
  *     responses:
  *       200:
  *         description: Technician access setting found
@@ -54,21 +47,14 @@ router.post('/access-setting',authGuard, accessSettingController.setAccessSettin
  *       500:
  *         description: Server error
  */
-router.get('/access-setting/:technicianId',authGuard, accessSettingController.getAccessSetting);
+router.get('/access-setting', authGuard, accessSettingController.getAccessSetting);
 
 /**
  * @swagger
- * /api/access-setting/{technicianId}:
+ * /api/access-setting:
  *   delete:
  *     summary: Delete access settings for a technician
  *     tags: [AccessSetting]
- *     parameters:
- *       - in: path
- *         name: technicianId
- *         required: true
- *         schema:
- *           type: string
- *         description: Technician ID
  *     responses:
  *       200:
  *         description: Access setting deleted successfully
@@ -77,6 +63,6 @@ router.get('/access-setting/:technicianId',authGuard, accessSettingController.ge
  *       500:
  *         description: Server error
  */
-router.delete('/access-setting/:technicianId',authGuard, accessSettingController.deleteAccessSetting);
+router.delete('/access-setting/:technicianId', authGuard, accessSettingController.deleteAccessSetting);
 
 module.exports = router;
