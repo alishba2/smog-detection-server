@@ -27,4 +27,5 @@ const sendVerificationEmail = async (to,  token) => {
   await transporter.sendMail(mailOptions);
 };
 
+
 module.exports = sendVerificationEmail;

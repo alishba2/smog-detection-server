@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerTechnician, loginTechnician, googleAuth, verifyEmail, resetPassword, resetPasswordRequest, getCurrentTechnician } = require('../controllers/authController');
+const { registerTechnician, loginTechnician, googleAuth, verifyEmail, resetPassword, resetPasswordRequest, getCurrentTechnician,createTech } = require('../controllers/authController');
 const authGuard = require('../middlewares/authGuard');
 
 /**
@@ -128,6 +128,41 @@ router.post('/google', googleAuth);
  *       - Authentication
  */
 router.get('/verify-email', verifyEmail);
+
+
+
+/**
+ * @swagger
+* /api/auth/create-tech:
+ *   post:
+ *     summary: Register a new technician
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: technician@example.com
+ *               password:
+ *                 type: string
+ *                 example: yourpassword
+ *     responses:
+ *       201:
+ *         description: Technician registered successfully
+ *       400:
+ *         description: Email already registered
+ *       500:
+ *         description: Server error
+ */
+router.post('/create-tech',authGuard, createTech);
+
 
 
 /**

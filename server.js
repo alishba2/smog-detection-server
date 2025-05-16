@@ -15,6 +15,8 @@ const reportRoutes = require('./routes/report');
 const { swaggerUi, swaggerSpec } = require('./swagger');
 const cron = require('node-cron');
 const Report = require('./models/Report');
+const payment = require('./routes/payment');
+const accessSetting = require('./routes/accessSettingRoutes');
 
 const app = express();
 
@@ -54,6 +56,10 @@ app.use('/api/analytics', analyticsRoutes);
 app.use("/api/service", serviceRoutes);
 app.use('/api', sendForm);
 app.use('/api/report', reportRoutes);
+app.use('/api', accessSetting);
+
+
+app.use('/api/payment', payment);
 
 
 app.get('/', (req, res) => {

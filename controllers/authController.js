@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const Technician = require('../models/Technician');
 
+const sendVerificationTech = require('../utility/sendVerificationEmailTech');
+
 const sendVerificationEmail = require('../utility/sendVerificationEmail');
 const sendResetPasswordEmail = require('../utility/sendResetPasswordEmail')
 
@@ -47,6 +49,33 @@ exports.loginTechnician = async (req, res) => {
   }
 };
 
+// shop owner will add tech manually and email will be sent to tech you are added by shop owner
+exports.createTech = async (req, res) => {
+
+  console.log("hereeeeeeeeeeeeee");
+
+  const { email, password } = req.body;
+  try {
+    const existing = await Technician.findOne({ email });
+    if (existing) return res.status(400).json({ msg: 'Email already registered' });
+
+    console.log(req.user, "req user hereeeeeeeeeeeee");
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(password, salt,);
+    let role = "tech";
+    let isVerified = true;
+
+
+    const newTech = new Technician({ email, passwordHash ,role,isVerified});
+    await newTech.save();
+    
+    await sendVerificationTech(newTech.email, req.user.email, password);
+    res.status(201).json({ msg: 'Technician registered successfully! Verify you Email to login' });
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error', error: err.message });
+  }
+
+}
 
 exports.googleAuth = async (req, res) => {
   try {
@@ -212,3 +241,4 @@ exports.getCurrentTechnician = async (req, res) => {
     res.status(401).json({ msg: err.message });
   }
 };
+
