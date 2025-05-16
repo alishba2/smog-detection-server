@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerTechnician, loginTechnician, googleAuth, verifyEmail, resetPassword, resetPasswordRequest, getCurrentTechnician,createTech } = require('../controllers/authController');
+const { registerTechnician, loginTechnician, googleAuth, verifyEmail, resetPassword, resetPasswordRequest, getCurrentTechnician,createTech,getTech } = require('../controllers/authController');
 const authGuard = require('../middlewares/authGuard');
 
 /**
@@ -163,6 +163,22 @@ router.get('/verify-email', verifyEmail);
  */
 router.post('/create-tech',authGuard, createTech);
 
+/**
+ * @swagger
+ * /api/auth/get-techs-by-creator:
+ *   get:
+ *     summary: Get all technicians created by logged-in user
+ *     tags: [Authentication]
+ *     responses:
+ *       200:
+ *         description: List of technicians
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
+
+router.get('/get-techs-by-creator',authGuard, getTech);
 
 
 /**
@@ -231,6 +247,9 @@ router.post('/reset-password-request', resetPasswordRequest);
  *       - Authentication
  */
 router.post('/reset-password', resetPassword);
+
+
+
 
 /**
  * @swagger

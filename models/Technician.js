@@ -21,6 +21,7 @@ const TechnicianSchema = new mongoose.Schema({
   squareMerchantId: String,
   payPalAccessToken: String,
   paypalRefreshToken: String,
+  creatorId: { type: String, required: false }
 });
 
 module.exports = mongoose.model('Technician', TechnicianSchema);

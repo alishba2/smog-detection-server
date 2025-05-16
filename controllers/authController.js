@@ -7,6 +7,7 @@ const sendVerificationTech = require('../utility/sendVerificationEmailTech');
 
 const sendVerificationEmail = require('../utility/sendVerificationEmail');
 const sendResetPasswordEmail = require('../utility/sendResetPasswordEmail')
+const AccessSetting = require('../models/AccessSettings');
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -64,11 +65,12 @@ exports.createTech = async (req, res) => {
     const passwordHash = await bcrypt.hash(password, salt,);
     let role = "tech";
     let isVerified = true;
+    let creatorId = req.user.id;
 
 
-    const newTech = new Technician({ email, passwordHash ,role,isVerified});
+    const newTech = new Technician({ email, passwordHash, role, isVerified, creatorId });
     await newTech.save();
-    
+
     await sendVerificationTech(newTech.email, req.user.email, password);
     res.status(201).json({ msg: 'Technician registered successfully! Verify you Email to login' });
   } catch (err) {
@@ -76,6 +78,30 @@ exports.createTech = async (req, res) => {
   }
 
 }
+
+exports.getTech = async (req, res) => {
+  try {
+    const techs = await Technician.find({ creatorId: req.user.id });
+
+    // Get access setting for each tech
+    const enrichedTechs = await Promise.all(
+      techs.map(async (tech) => {
+        const setting = await AccessSetting.findOne({ technicianId: tech._id });
+        return {
+          id: tech._id,
+          name: tech.name,
+          email: tech.email,
+          isVerified: tech.isVerified,
+          accessSetting: setting || { reports: false }, 
+        };
+      })
+    );
+
+    res.status(200).json(enrichedTechs);
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
 
 exports.googleAuth = async (req, res) => {
   try {
