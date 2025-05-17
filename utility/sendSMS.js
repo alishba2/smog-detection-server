@@ -1,4 +1,5 @@
 const twilio = require('twilio');
+require('dotenv').config(); // must be at the top
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
