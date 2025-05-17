@@ -2,43 +2,37 @@ const AccessSetting = require('../models/AccessSettings');
 
 
 exports.setAccessSetting = async (req, res) => {
-  try {
-    const {
-      technicianId,
-      reports = false,
-      totalJobs = false,
-      totalRevenue = false,
-      revenueToday = false,
-      jobsToday = false
-    } = req.body;
-
-    let setting = await AccessSetting.findOne({ technicianId });
-
-    if (setting) {
-      setting.reports = reports;
-      setting.totalJobs = totalJobs;
-      setting.totalRevenue = totalRevenue;
-      setting.revenueToday = revenueToday;
-      setting.jobsToday = jobsToday;
-      await setting.save();
-    } else {
-      setting = new AccessSetting({
-        technicianId,
-        reports,
-        totalJobs,
-        totalRevenue,
-        revenueToday,
-        jobsToday
-      });
-      await setting.save();
+    try {
+      const { technicianId, ...fieldsToUpdate } = req.body;
+  
+      if (!technicianId) {
+        return res.status(400).json({ msg: 'Technician ID is required' });
+      }
+  
+      let setting = await AccessSetting.findOne({ technicianId });
+  
+      if (setting) {
+        // Only update provided fields
+        Object.keys(fieldsToUpdate).forEach((key) => {
+          setting[key] = fieldsToUpdate[key];
+        });
+        await setting.save();
+      } else {
+        // Create new setting with only the provided fields
+        setting = new AccessSetting({
+          technicianId,
+          ...fieldsToUpdate,
+        });
+        await setting.save();
+      }
+  
+      res.status(200).json({ msg: 'Access setting saved successfully', setting });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ msg: 'Server error', error: err.message });
     }
-
-    res.status(200).json({ msg: 'Access setting saved successfully', setting });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ msg: 'Server error', error: err.message });
-  }
-};
+  };
+  
 
 
 // Get access setting by technician ID
