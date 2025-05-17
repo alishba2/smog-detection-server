@@ -281,6 +281,7 @@ exports.getCurrentTechnician = async (req, res) => {
       name: tech.name,
       email: tech.email,
       isVerified: tech.isVerified,
+      role: tech.role
     });
   } catch (err) {
     res.status(401).json({ msg: err.message });
