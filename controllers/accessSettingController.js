@@ -1,17 +1,35 @@
 const AccessSetting = require('../models/AccessSettings');
 
-// Create or update access setting
+
 exports.setAccessSetting = async (req, res) => {
   try {
-    const { technicianId, reports } = req.body;
+    const {
+      technicianId,
+      reports = false,
+      totalJobs = false,
+      totalRevenue = false,
+      revenueToday = false,
+      jobsToday = false
+    } = req.body;
 
     let setting = await AccessSetting.findOne({ technicianId });
 
     if (setting) {
       setting.reports = reports;
+      setting.totalJobs = totalJobs;
+      setting.totalRevenue = totalRevenue;
+      setting.revenueToday = revenueToday;
+      setting.jobsToday = jobsToday;
       await setting.save();
     } else {
-      setting = new AccessSetting({ technicianId, reports });
+      setting = new AccessSetting({
+        technicianId,
+        reports,
+        totalJobs,
+        totalRevenue,
+        revenueToday,
+        jobsToday
+      });
       await setting.save();
     }
 
@@ -21,6 +39,7 @@ exports.setAccessSetting = async (req, res) => {
     res.status(500).json({ msg: 'Server error', error: err.message });
   }
 };
+
 
 // Get access setting by technician ID
 exports.getAccessSetting = async (req, res) => {
