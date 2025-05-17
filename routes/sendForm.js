@@ -1,7 +1,6 @@
 const { sendFormLink } = require('../controllers/sendFormController'); // or separate controller if you prefer
 const express = require('express');
 const router = express.Router();
-const authGuard = require('../middlewares/authGuard'); // adjust path if needed
 
 /**
  * @swagger

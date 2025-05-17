@@ -92,7 +92,7 @@ exports.getTech = async (req, res) => {
           name: tech.name,
           email: tech.email,
           isVerified: tech.isVerified,
-          accessSetting: setting || { reports: false }, 
+          accessSetting: setting || { reports: false },
         };
       })
     );
