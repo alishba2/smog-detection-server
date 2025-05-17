@@ -15,7 +15,7 @@ const sendVerificationTech = async (to, email, password) => {
         to,
         subject: 'You are added to a shop on Smog Detection',
         html: `
-        <h2>Hello, ${email}!</h2>
+        <h2>Hello!</h2>
         <p>You have been added to a shop on Smog Detection.</p>
         <p>Login using the following password: ${password}</p>
       `
