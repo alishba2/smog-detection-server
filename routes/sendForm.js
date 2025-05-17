@@ -44,5 +44,5 @@ const authGuard = require('../middlewares/authGuard'); // adjust path if needed
  *         description: Server error or SMS sending failed
  */
 
-router.post('/send-form-link', authGuard,sendFormLink);
+router.post('/send-form-link',sendFormLink);
 module.exports =router;
