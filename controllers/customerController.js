@@ -29,13 +29,13 @@ async function submitCustomerForm(req, res) {
     }
 
     // Check if customer exists by email + vehicleNumber
-    let customer = await Customer.findOne({ email, vehicleNumber });
+    let customer = await Customer.findOne({ email, vehicleNumber, technicianId: technicianObjectId });
 
     if (customer) {
       // Existing customer → update details + mark as Returning
       customer.name = name;
       customer.phone = phone,
-      customer.licensePlate = licensePlate;
+        customer.licensePlate = licensePlate;
       customer.vehicleModel = vehicleModel;
       customer.vehicleMake = vehicleMake;
       customer.year = year;
@@ -43,7 +43,7 @@ async function submitCustomerForm(req, res) {
       customer.signature = signature;
       customer.technicianId = technicianObjectId;
       customer.customerType = 'Returning Customer';
-   
+
 
       await customer.save();
     } else {
@@ -66,7 +66,7 @@ async function submitCustomerForm(req, res) {
       await customer.save();
     }
 
-    let {service}= await createService(technicianId, customer._id);
+    let { service } = await createService(technicianId, customer._id);
 
     res.status(201).json({
       message: customer.customerType === 'New Customer'
@@ -102,7 +102,7 @@ async function submitCustomerForm(req, res) {
 
 async function getCustomerHistory(customerId, technicianId) {
 
-  console.log(customerId,technicianId);
+  console.log(customerId, technicianId);
   try {
     const services = await Service.find({
       technicianId,
