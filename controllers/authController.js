@@ -20,7 +20,6 @@ exports.registerTechnician = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    console.log('hje');
     const newTech = new Technician({ email, passwordHash });
     await newTech.save();
     const verificationToken = jwt.sign({ id: newTech._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
@@ -44,7 +43,7 @@ exports.loginTechnician = async (req, res) => {
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 
     const token = jwt.sign({ id: tech._id }, process.env.JWT_SECRET, { expiresIn: '2d' });
-    res.json({ token, technician: { id: tech._id, name: tech.name, email: tech.email } });
+    res.json({ token, technician: { id: tech._id, name: tech.name, email: tech.email , role:tech.role} });
   } catch (err) {
     res.status(500).json({ msg: 'Server error', error: err.message });
   }
