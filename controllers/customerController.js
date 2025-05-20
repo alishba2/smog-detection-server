@@ -121,4 +121,17 @@ async function getCustomerHistory(customerId, technicianId) {
     throw new Error(`Failed to fetch customer history: ${error.message}`);
   }
 }
-module.exports = { submitCustomerForm, getCustomerHistory };
+
+
+async function getAllCustomers(req, res) {
+
+  let techId = req.user.id;
+
+  try {
+    const customers = await Customer.find({ technicianId: techId });
+    res.json(customers);
+  } catch (err) {
+    res.status(500).json({ msg: 'Error fetching services', error: err.message });
+  }
+}
+module.exports = { submitCustomerForm, getCustomerHistory ,getAllCustomers};

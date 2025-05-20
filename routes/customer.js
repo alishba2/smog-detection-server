@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { submitCustomerForm } = require('../controllers/customerController');
 const { getCustomerHistory } = require('../controllers/customerController');
-
+const { getAllCustomers } = require('../controllers/customerController');
 /**
  * @swagger
  * /api/customer/submit-form:
@@ -128,13 +128,15 @@ router.post('/submit-form', submitCustomerForm);
 
 // Example usage of the function in your route
 router.get('/customer-history', async (req, res) => {
-  const { customerId, technicianId } = req.query; 
+  const { customerId, technicianId } = req.query;
   try {
     const history = await getCustomerHistory(customerId, technicianId);
-    res.status(200).json(history); 
+    res.status(200).json(history);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
+
+router.get('/customer-data', getAllCustomers)
 module.exports = router;
