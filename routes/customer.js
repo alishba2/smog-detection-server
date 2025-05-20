@@ -3,6 +3,8 @@ const router = express.Router();
 const { submitCustomerForm } = require('../controllers/customerController');
 const { getCustomerHistory } = require('../controllers/customerController');
 const { getAllCustomers } = require('../controllers/customerController');
+const authGuard = require('../middlewares/authGuard');
+
 /**
  * @swagger
  * /api/customer/submit-form:
@@ -137,6 +139,21 @@ router.get('/customer-history', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/customer/customer-data:
+ *   get:
+ *     summary: Get all customers for a technician
+ *     description: Retrieve all customer records associated with the currently logged-in technician.
+ *     operationId: getAllCustomers
+ *     tags:
+ *       - Customer
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of customers retrieved successfully.
+ *  */
+router.get('/customer-data', authGuard, getAllCustomers)
 
-router.get('/customer-data', getAllCustomers)
 module.exports = router;

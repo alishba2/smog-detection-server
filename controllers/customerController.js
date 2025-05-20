@@ -125,6 +125,8 @@ async function getCustomerHistory(customerId, technicianId) {
 
 async function getAllCustomers(req, res) {
 
+
+  console.log(req.user);
   let techId = req.user.id;
 
   try {
