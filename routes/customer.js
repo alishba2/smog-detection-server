@@ -5,6 +5,19 @@ const { getCustomerHistory } = require('../controllers/customerController');
 const { getAllCustomers } = require('../controllers/customerController');
 const authGuard = require('../middlewares/authGuard');
 const sendInvoiceEmail = require('../utility/sendInvoiceToCustomer');
+const multer = require('multer');
+const path = require('path');
+
+// Multer setup to handle file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/'); // Ensure this folder exists
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
 
 /**
  * @swagger
@@ -161,7 +174,7 @@ router.get('/customer-data', authGuard, getAllCustomers)
 app.post('/send-invoice', upload.single('invoice'), async (req, res) => {
   try {
     const to = req.body.email;
-    const file = req.file; 
+    const file = req.file;
     await sendInvoiceEmail(to, file);
     res.send('Invoice sent!');
   } catch (err) {

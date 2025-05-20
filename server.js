@@ -19,6 +19,7 @@ const payment = require('./routes/payment');
 const accessSetting = require('./routes/accessSettingRoutes');
 
 const app = express();
+app.use('/uploads', express.static('uploads')); // Serve uploaded files
 
 
 app.use(cors({
