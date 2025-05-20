@@ -175,13 +175,14 @@ router.post('/send-invoice', upload.single('invoice'), async (req, res) => {
   try {
     const to = req.body.email;
     const file = req.file;
+    console
     await sendInvoiceEmail(to, file);
     res.send('Invoice sent!');
   } catch (err) {
     console.error(err);
     res.status(500).send('Failed to send invoice.');
   }
-  
+
 });
 
 
