@@ -4,6 +4,7 @@ const { submitCustomerForm } = require('../controllers/customerController');
 const { getCustomerHistory } = require('../controllers/customerController');
 const { getAllCustomers } = require('../controllers/customerController');
 const authGuard = require('../middlewares/authGuard');
+const sendInvoiceEmail = require('../utility/sendInvoiceToCustomer');
 
 /**
  * @swagger
@@ -155,5 +156,19 @@ router.get('/customer-history', async (req, res) => {
  *         description: List of customers retrieved successfully.
  *  */
 router.get('/customer-data', authGuard, getAllCustomers)
+
+
+app.post('/send-invoice', upload.single('invoice'), async (req, res) => {
+  try {
+    const to = req.body.email;
+    const file = req.file; 
+    await sendInvoiceEmail(to, file);
+    res.send('Invoice sent!');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Failed to send invoice.');
+  }
+});
+
 
 module.exports = router;
