@@ -16,7 +16,7 @@ const sendInvoiceEmail = async (to, file) => {
         text: 'Please find the attached invoice.',
         attachments: [
             {
-                filename: file.originalname,
+                filename: 'invoice.pdf',
                 path: file.path,
             },
         ],
@@ -26,3 +26,4 @@ const sendInvoiceEmail = async (to, file) => {
 };
 
 module.exports = sendInvoiceEmail;
+
