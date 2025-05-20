@@ -171,7 +171,7 @@ router.get('/customer-history', async (req, res) => {
 router.get('/customer-data', authGuard, getAllCustomers)
 
 
-app.post('/send-invoice', upload.single('invoice'), async (req, res) => {
+router.post('/send-invoice', upload.single('invoice'), async (req, res) => {
   try {
     const to = req.body.email;
     const file = req.file;
@@ -181,6 +181,7 @@ app.post('/send-invoice', upload.single('invoice'), async (req, res) => {
     console.error(err);
     res.status(500).send('Failed to send invoice.');
   }
+  
 });
 
 
