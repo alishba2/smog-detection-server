@@ -151,6 +151,7 @@ exports.googleAuth = async (req, res) => {
         name: payload.name,
         email: payload.email,
         passwordHash: '',
+        isVerified:true
       });
       await tech.save();
     }
